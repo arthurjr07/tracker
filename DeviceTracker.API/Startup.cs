@@ -42,7 +42,12 @@ namespace DeviceTracker.API
 
             services.Configure<AzureSettings>(Configuration.GetSection("AzureSettings"));
             services.AddHttpClient();
-            services.AddCors();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
 
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -70,7 +75,7 @@ namespace DeviceTracker.API
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample Project API V1");
             });
 
-            app.UseCors();
+            app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();
         }

@@ -15,7 +15,7 @@ namespace DeviceTracker.Business.Mapper
                 .ForMember(c => c.IsDeleted , x => x.MapFrom(src => false));
 
             CreateMap<Log, LogDTO>()
-                .ForMember(c => c.LogType, x => x.MapFrom(src => src.LogType == 1? "CheckIn" : "CheckOut"));
+                .ForMember(c => c.LogType, x => x.MapFrom(src => src.LogType == 0? "CheckIn" : "CheckOut"));
         }
     }
 }
