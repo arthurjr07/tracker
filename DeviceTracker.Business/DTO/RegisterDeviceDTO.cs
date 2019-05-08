@@ -10,5 +10,6 @@ namespace DeviceTracker.Business.DTO
         public string DeviceName { get; set; }
         public string OperatingSystem { get; set; }
         public string Version { get; set; }
+        public string ERNIControlNo { get; set; }
     }
 }

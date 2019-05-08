@@ -16,34 +16,33 @@ namespace DeviceTracker.Business
     {
         private readonly IHttpClientFactory httpClientFactory;
         private readonly IOptions<AzureSettings> azureSettings;
+        private readonly ITokenService _tokenService;
 
         public AzureBusiness(IHttpClientFactory httpClientFactory,
-            IOptions<AzureSettings> azureSettings)
+            IOptions<AzureSettings> azureSettings,
+            ITokenService tokenService)
         {
             this.httpClientFactory = httpClientFactory;
             this.azureSettings = azureSettings;
+            this._tokenService = tokenService;
         }
 
-        public async Task<bool> Login(LoginDTO login)
+        public async Task<UserInfo> Login(LoginDTO login)
         {
-            var result = false;
-            try
+            var userInfo = default(UserInfo);
+            using (var httpClient = httpClientFactory.CreateClient())
+            using (var request = new FormUrlEncodedContent(CreateKeyValuePairCollection(login)))
             {
-                using (var httpClient = httpClientFactory.CreateClient())
-                using (var content = new FormUrlEncodedContent(CreateKeyValuePairCollection(login)))
-                {
-                    var response = await httpClient.PostAsync(azureSettings.Value.LoginUrl, content);
+                var response = await httpClient.PostAsync(azureSettings.Value.LoginUrl, request);
 
-                    response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
 
-                    result = true;
-                }
+                var content = await response.Content.ReadAsStringAsync();
+                var azureToken = JsonConvert.DeserializeObject<AzureToken>(content);
+
+                userInfo = _tokenService.ReadToken(azureToken.access_token);
             }
-            catch
-            {
-                result = false;
-            }
-            return result;
+            return userInfo;
         }
 
         private IEnumerable<KeyValuePair<string, string>> CreateKeyValuePairCollection(LoginDTO login)

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DeviceTracker.Business.DTO;
 using DeviceTracker.Business.Interfaces;
 using DeviceTracker.Data;
+using DeviceTracker.Domain.Entity;
 using DeviceTracker.Domain.Enums;
 using DeviceTracker.Domain.Models;
 
@@ -29,7 +30,7 @@ namespace DeviceTracker.Business
         /// </summary>
         /// <param name="checkIn">Contains the check in information</param>
         /// <returns>Returns true if the device is succesfully checked in, otherwise false</returns>
-        public async Task<bool> CheckInAsync(CheckInDTO checkIn)
+        public async Task<bool> CheckInAsync(CheckInDTO checkIn, UserInfo userInfo)
         {
             var device = await unitOfWork.DeviceRepository.FindByIdAsync(checkIn.Id);
             if (device == null || device.IsDeleted)
@@ -37,7 +38,7 @@ namespace DeviceTracker.Business
                 return false;
             }
 
-            device.CurrentUser = checkIn.Email;
+            device.CurrentUser = userInfo.Name;
             device.Remarks = checkIn.Remarks;
             await unitOfWork.DeviceRepository.UpdateAsync(device.Id, device).ConfigureAwait(false);
 
@@ -45,7 +46,7 @@ namespace DeviceTracker.Business
             {
                 LogTime = DateTime.Now,
                 LogType = (int)LogType.CheckIn,
-                UserEmail = checkIn.Email,
+                UserName = userInfo.Name,
                 DeviceId = device.Id
             };
 
@@ -71,7 +72,7 @@ namespace DeviceTracker.Business
             {
                 LogTime = DateTime.Now,
                 LogType = (int)LogType.CheckOut,
-                UserEmail = checkOut.Email,
+                UserName = checkOut.UserName,
                 DeviceId = device.Id
             };
 

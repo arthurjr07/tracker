@@ -31,8 +31,29 @@ namespace DeviceTracker.Business
             return await unitOfWork.DeviceRepository.GetAsync(c => !c.IsDeleted).ConfigureAwait(false);
         }
 
+        public async Task<IEnumerable<Device>> SearchDevicesAsync(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                return await unitOfWork.DeviceRepository.GetAsync(c => !c.IsDeleted).ConfigureAwait(false);
+            }
+
+            var properties = typeof(Device).GetProperties().Where(prop => prop.PropertyType == typeof(string)); ;
+            var devices = await unitOfWork.DeviceRepository.GetAsync(c => !c.IsDeleted).ConfigureAwait(false);
+            return devices.Where(d => properties.Any(prop =>
+                                {
+                                    var x = prop.GetValue(d, null)?.ToString().ToUpperInvariant().Contains(searchText.ToUpperInvariant());
+                                    return x.HasValue ? x.Value : false;
+                                }));
+        }
+
         public async Task<IEnumerable<Log>> GetHistoryAsync(string id)
         {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                throw new ApplicationException("Device does not exists.");
+            }
+
             var device = await unitOfWork.DeviceRepository.FindByIdAsync(id).ConfigureAwait(false);
             if (device == null || device.IsDeleted)
             {
@@ -47,13 +68,21 @@ namespace DeviceTracker.Business
             var device = await unitOfWork.DeviceRepository.FindByIdAsync(newDevice.Id).ConfigureAwait(false);
             if (device != null)
             {
-                throw new ApplicationException("Device already exists.");
+                device.DeviceName = newDevice.DeviceName;
+                device.OperatingSystem = newDevice.OperatingSystem;
+                device.Version = newDevice.Version;
+                await unitOfWork.DeviceRepository.UpdateAsync(device.Id, device).ConfigureAwait(false);
             }
-            device =  await unitOfWork.DeviceRepository.AddAsync(newDevice).ConfigureAwait(false);
+            else
+            {
+                device = await unitOfWork.DeviceRepository.AddAsync(newDevice).ConfigureAwait(false);
+            }
+
             await unitOfWork.CompleteAsync().ConfigureAwait(false);
 
             return device;
         }
+
 
         public async Task<bool> UnRegisterAsync(string id)
         {

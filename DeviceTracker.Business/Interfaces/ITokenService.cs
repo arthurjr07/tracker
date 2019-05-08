@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 
 namespace DeviceTracker.Business.Interfaces
 {
-    public interface IAzureBusiness
+    public interface ITokenService
     {
-        Task<UserInfo> Login(LoginDTO login);
+        string RetrieveToken(UserInfo userInfo);
+
+        UserInfo ReadToken(string accessToken);
     }
 }

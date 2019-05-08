@@ -14,5 +14,7 @@ namespace DeviceTracker.Business.Interfaces
         Task<IEnumerable<Device>> GetAllDevicesAsync();
 
         Task<IEnumerable<Log>> GetHistoryAsync(string id);
+
+        Task<IEnumerable<Device>> SearchDevicesAsync(string searchText);
     }
 }

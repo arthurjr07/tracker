@@ -10,10 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using System.Threading.Tasks;
-using DeviceTracker.Domain.Models;
-using System;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using FluentValidation.AspNetCore;
+using DeviceTracker.Business.Validation;
 
 namespace DeviceTracker.API
 {
@@ -34,13 +36,16 @@ namespace DeviceTracker.API
                 options.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(fvc => fvc.RegisterValidatorsFromAssemblyContaining<RegisterDeviceValidator>()); 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(LoginProfile)));
 
             services.AddDbContext<DeviceTrackerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DeviceTracker")));
 
             services.Configure<AzureSettings>(Configuration.GetSection("AzureSettings"));
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
             services.AddHttpClient();
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -49,11 +54,32 @@ namespace DeviceTracker.API
                        .AllowAnyHeader();
             }));
 
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAzureBusiness, AzureBusiness>();
             services.AddScoped<IDeviceBusiness, DeviceBusiness>();
             services.AddScoped<ITrackerBusiness, TrackerBusiness>();
+            services.AddScoped<ITokenService, TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +103,7 @@ namespace DeviceTracker.API
 
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
         }
     }

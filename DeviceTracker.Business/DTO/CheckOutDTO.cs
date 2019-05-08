@@ -12,6 +12,6 @@ namespace DeviceTracker.Business.DTO
         /// <summary>
         /// User email address
         /// </summary>
-        public string Email { get; set; }
+        public string UserName { get; set; }
     }
 }
