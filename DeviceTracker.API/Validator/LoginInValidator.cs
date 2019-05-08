@@ -6,8 +6,14 @@ using System.Text;
 
 namespace DeviceTracker.Business.Validation
 {
+    /// <summary>
+    /// Validator class for LoginDTO
+    /// </summary>
     public class LoginValidator : AbstractValidator<LoginDTO>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public LoginValidator()
         {
             RuleFor(reg => reg.Email).NotEmpty();

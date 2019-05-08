@@ -38,7 +38,7 @@ namespace DeviceTracker.Business
                 return false;
             }
 
-            if(string.IsNullOrWhiteSpace(device.CurrentUser)) //device is currently in use.
+            if(!string.IsNullOrWhiteSpace(device.CurrentUser)) //device is currently in use.
             {
                 var logOut = new Log
                 {

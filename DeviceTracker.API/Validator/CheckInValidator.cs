@@ -6,8 +6,14 @@ using System.Text;
 
 namespace DeviceTracker.Business.Validation
 {
+    /// <summary>
+    /// Validator class for CheckInDto
+    /// </summary>
     public class CheckInValidator : AbstractValidator<CheckInDTO>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public CheckInValidator()
         {
             RuleFor(reg => reg.Id).NotEmpty();

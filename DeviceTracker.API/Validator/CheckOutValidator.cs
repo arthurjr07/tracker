@@ -6,11 +6,16 @@ using System.Text;
 
 namespace DeviceTracker.Business.Validation
 {
+    /// <summary>
+    /// Validator class for CheckOutDTO
+    /// </summary>
     public class CheckOutValidator : AbstractValidator<CheckOutDTO>
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public CheckOutValidator()
         {
-            RuleFor(reg => reg.UserName).NotEmpty();
             RuleFor(reg => reg.Id).NotEmpty();
         }
     }
