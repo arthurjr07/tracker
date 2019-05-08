@@ -51,13 +51,13 @@ namespace DeviceTracker.Business
         {
             if (string.IsNullOrWhiteSpace(id))
             {
-                throw new ArgumentNullException("Device does not exists.");
+                throw new ArgumentNullException(nameof(id));
             }
 
             var device = await unitOfWork.DeviceRepository.FindByIdAsync(id).ConfigureAwait(false);
             if (device == null || device.IsDeleted)
             {
-                throw new NullReferenceException("Device does not exists.");
+                return new List<Log>();
             }
 
             return await unitOfWork.LogRepository.GetHistoryByDeviceIdAsync(id).ConfigureAwait(false);
@@ -86,17 +86,16 @@ namespace DeviceTracker.Business
 
         public async Task<bool> UnRegisterAsync(string id)
         {
-            bool result = true;
             var device = await unitOfWork.DeviceRepository.FindByIdAsync(id).ConfigureAwait(false);
             if (device == null)
             {
-                result =  false;
+                return false;
             }
 
             device.IsDeleted = true;
             await unitOfWork.DeviceRepository.UpdateAsync(id, device).ConfigureAwait(false);
             await unitOfWork.CompleteAsync().ConfigureAwait(false);
-            return result;
+            return true;
         }
     }
 }
