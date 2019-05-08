@@ -1,0 +1,3 @@
+dotnet C:\Users\crar\Downloads\SonarScanner\SonarScanner.MSBuild.dll begin /k:"arthurjr07_tracker" /o:"arthurjr07-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="b566c8775eaa04ed59c42385b2f7187836257cdf"
+dotnet build "C:\Users\crar\source\Github\tracker\DeviceTracker.sln"
+dotnet C:\Users\crar\Downloads\SonarScanner\SonarScanner.MSBuild.dll /d:sonar.login="b566c8775eaa04ed59c42385b2f7187836257cdf" end
