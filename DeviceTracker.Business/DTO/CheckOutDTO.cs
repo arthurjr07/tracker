@@ -9,9 +9,5 @@ namespace DeviceTracker.Business.DTO
     /// </summary>
     public class CheckOutDTO : TrackingDTO
     {
-        /// <summary>
-        /// User email address
-        /// </summary>
-        public string UserName { get; set; }
     }
 }
