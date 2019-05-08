@@ -12,7 +12,6 @@ namespace DeviceTracker.Data.Repositories
     /// </summary>
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
-        private readonly DbContext DbContext;
         protected readonly DbSet<TEntity> DbSet;
 
         /// <summary>

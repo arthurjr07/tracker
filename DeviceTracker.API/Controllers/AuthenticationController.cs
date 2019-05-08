@@ -23,25 +23,33 @@ namespace DeviceTracker.API.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAzureBusiness _azureBusiness;
-        private readonly ITokenService _tokenBusiness;
+        private readonly ITokenService _tokenService;
         private readonly AppSettings _appSettings;
         private readonly ILogger _logger;
 
-
-        private List<string> Users => new List<string>();
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="azureBusiness">The Azure Business object</param>
+        /// <param name="appSettings">The Application Settings object</param>
+        /// <param name="tokenBusiness">The Token Service object</param>
+        /// <param name="logger">The Logger object</param>
         public AuthenticationController(IAzureBusiness azureBusiness,
                                         IOptions<AppSettings> appSettings,
-                                        ITokenService tokenBusiness,
+                                        ITokenService tokenService,
                                         ILogger<AuthenticationController> logger)
         {
             this._azureBusiness = azureBusiness;
             this._appSettings = appSettings.Value;
-            this._tokenBusiness = tokenBusiness;
+            this._tokenService = tokenService;
             this._logger = logger;
         }
 
-
+        /// <summary>
+        /// Login API
+        /// </summary>
+        /// <param name="credential">The username and password</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("login")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type=typeof(string))]
@@ -70,7 +78,7 @@ namespace DeviceTracker.API.Controllers
                     return Unauthorized();
                 }
 
-                var accessToken = _tokenBusiness.RetrieveToken(userInfo);
+                var accessToken = _tokenService.RetrieveToken(userInfo);
 
                 return Ok(accessToken);
             }

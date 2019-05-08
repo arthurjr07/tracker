@@ -7,7 +7,7 @@ namespace DeviceTracker.Business.Interfaces
 {
     public interface IDeviceBusiness
     {
-        Task<Device> RegisterAsync(Device device);
+        Task<Device> RegisterAsync(Device newDevice);
 
         Task<bool> UnRegisterAsync(string id);
 

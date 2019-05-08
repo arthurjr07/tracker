@@ -6,8 +6,8 @@ namespace DeviceTracker.Business.Interfaces
 {
     public interface ITrackerBusiness
     {
-        Task<bool> CheckInAsync(CheckInDTO checkin, UserInfo userInfo);
+        Task<bool> CheckInAsync(CheckInDTO checkIn, UserInfo userInfo);
 
-        Task<bool> CheckOutAsync(CheckOutDTO checkout);
+        Task<bool> CheckOutAsync(CheckOutDTO checkOut);
     }
 }

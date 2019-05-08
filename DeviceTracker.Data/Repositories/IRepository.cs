@@ -19,7 +19,7 @@ namespace DeviceTracker.Data.Repositories
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task UpdateAsync(string id, TEntity entity);
+        Task UpdateAsync(string id, TEntity updated);
 
         /// <summary>
         /// Delete item in the repository
