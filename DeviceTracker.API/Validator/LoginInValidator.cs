@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DeviceTracker.Business.Validation
 {
-    class LoginValidator : AbstractValidator<LoginDTO>
+    public class LoginValidator : AbstractValidator<LoginDTO>
     {
         public LoginValidator()
         {

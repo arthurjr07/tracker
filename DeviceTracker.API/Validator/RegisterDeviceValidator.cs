@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace DeviceTracker.Business.Validation
 {
-    class RegisterDeviceValidator : AbstractValidator<RegisterDeviceDTO>
+    public class RegisterDeviceValidator : AbstractValidator<RegisterDeviceDTO>
     {
         public RegisterDeviceValidator()
         {

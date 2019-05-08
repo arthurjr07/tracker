@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DeviceTracker.Business.Validation
 {
-    class CheckOutValidator : AbstractValidator<CheckOutDTO>
+    public class CheckOutValidator : AbstractValidator<CheckOutDTO>
     {
         public CheckOutValidator()
         {
