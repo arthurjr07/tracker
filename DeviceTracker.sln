@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.156
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceTracker.API", "DeviceTracker.API\DeviceTracker.API.csproj", "{766B4BF4-C8D2-4C4C-903C-BFDC6423AC4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceTracker.API", "DeviceTracker.API\DeviceTracker.API.csproj", "{766B4BF4-C8D2-4C4C-903C-BFDC6423AC4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceTracker.Business", "DeviceTracker.Business\DeviceTracker.Business.csproj", "{B62801C5-873B-4F9D-82E3-65CCA97B0A8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceTracker.Business", "DeviceTracker.Business\DeviceTracker.Business.csproj", "{B62801C5-873B-4F9D-82E3-65CCA97B0A8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceTracker.Domain", "DeviceTracker.Domain\DeviceTracker.Domain.csproj", "{CC491DAC-E900-4801-83F7-C796C6D7D821}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceTracker.Domain", "DeviceTracker.Domain\DeviceTracker.Domain.csproj", "{CC491DAC-E900-4801-83F7-C796C6D7D821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceTracker.Data", "DeviceTracker.Data\DeviceTracker.Data.csproj", "{AD49E9A9-E3DE-4F40-A30F-C29C57AFFA77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeviceTracker.Data", "DeviceTracker.Data\DeviceTracker.Data.csproj", "{AD49E9A9-E3DE-4F40-A30F-C29C57AFFA77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceTracker.API.IntegrationTests", "DeviceTracker.API.IntegrationTests\DeviceTracker.API.IntegrationTests.csproj", "{CA6CA70E-EB77-43F6-B410-6CB2A4F772B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{AD49E9A9-E3DE-4F40-A30F-C29C57AFFA77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD49E9A9-E3DE-4F40-A30F-C29C57AFFA77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD49E9A9-E3DE-4F40-A30F-C29C57AFFA77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA6CA70E-EB77-43F6-B410-6CB2A4F772B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA6CA70E-EB77-43F6-B410-6CB2A4F772B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA6CA70E-EB77-43F6-B410-6CB2A4F772B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA6CA70E-EB77-43F6-B410-6CB2A4F772B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
