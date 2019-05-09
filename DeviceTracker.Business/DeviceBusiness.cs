@@ -25,12 +25,35 @@ namespace DeviceTracker.Business
             this.unitOfWork = unitOfWork;
         }
 
+        /// <summary>
+        /// Retrieve information of a device
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Device> GetDeviceByIdAsync(string id)
+        {
+            var device =   await unitOfWork.DeviceRepository.FindByIdAsync(id).ConfigureAwait(false);
+            if(device.IsDeleted)
+            {
+                return null;
+            }
+            return device;
+        }
 
+        /// <summary>
+        /// Retrieve all device information
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Device>> GetAllDevicesAsync()
         {
             return await unitOfWork.DeviceRepository.GetAsync(c => !c.IsDeleted).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Search devices
+        /// </summary>
+        /// <param name="searchText"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Device>> SearchDevicesAsync(string searchText)
         {
             if (string.IsNullOrWhiteSpace(searchText))
@@ -47,6 +70,11 @@ namespace DeviceTracker.Business
                                 }));
         }
 
+        /// <summary>
+        /// Retrieve checkin/checkout history of a device
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Log>> GetHistoryAsync(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -63,6 +91,12 @@ namespace DeviceTracker.Business
             return await unitOfWork.LogRepository.GetHistoryByDeviceIdAsync(id).ConfigureAwait(false);
         }
 
+
+        /// <summary>
+        /// Add or edit of device
+        /// </summary>
+        /// <param name="newDevice"></param>
+        /// <returns></returns>
         public async Task<Device> RegisterAsync(Device newDevice)
         {
             var device = await unitOfWork.DeviceRepository.FindByIdAsync(newDevice.Id).ConfigureAwait(false);
@@ -83,7 +117,11 @@ namespace DeviceTracker.Business
             return device;
         }
 
-
+        /// <summary>
+        /// Delete a device
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<bool> UnRegisterAsync(string id)
         {
             var device = await unitOfWork.DeviceRepository.FindByIdAsync(id).ConfigureAwait(false);

@@ -57,7 +57,31 @@ namespace DeviceTracker.API.Controllers
             }
         }
 
-        // GET api/devices
+        // DELETE api/devices/5
+        [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(DeviceDTO))]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult> GetById(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var device = await _deviceBusiness.GetDeviceByIdAsync(id).ConfigureAwait(false);
+                return Ok(device);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message + ex.StackTrace);
+                return StatusCode((int)HttpStatusCode.InternalServerError);
+            }
+        }
+
+        // Search api/devices
         [HttpGet]
         [Route("Search")]
         [ProducesResponseType((int)HttpStatusCode.OK)]

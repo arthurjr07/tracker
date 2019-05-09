@@ -11,6 +11,8 @@ namespace DeviceTracker.Business.Interfaces
 
         Task<bool> UnRegisterAsync(string id);
 
+        Task<Device> GetDeviceByIdAsync(string id);
+
         Task<IEnumerable<Device>> GetAllDevicesAsync();
 
         Task<IEnumerable<Log>> GetHistoryAsync(string id);

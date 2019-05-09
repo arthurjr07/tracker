@@ -68,6 +68,12 @@ namespace DeviceTracker.Business
             return true;
         }
 
+
+        /// <summary>
+        /// Checkout a device
+        /// </summary>
+        /// <param name="checkOut"></param>
+        /// <returns></returns>
         public async Task<bool> CheckOutAsync(CheckOutDTO checkOut)
         {
             var device = await unitOfWork.DeviceRepository.FindByIdAsync(checkOut.Id);
