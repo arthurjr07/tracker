@@ -57,7 +57,7 @@ namespace DeviceTracker.API.Controllers
             }
         }
 
-        // DELETE api/devices/5
+        // Get api/devices/5
         [HttpGet("{id}")]
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(DeviceDTO))]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
