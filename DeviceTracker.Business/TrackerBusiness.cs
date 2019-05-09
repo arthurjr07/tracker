@@ -82,19 +82,23 @@ namespace DeviceTracker.Business
                 return false;
             }
 
+            if (!string.IsNullOrWhiteSpace(device.CurrentUser))
+            {
+                var log = new Log
+                {
+                    LogTime = DateTime.Now,
+                    LogType = (int)LogType.CheckOut,
+                    UserName = device.CurrentUser,
+                    DeviceId = device.Id
+                };
+                await unitOfWork.LogRepository.AddAsync(log).ConfigureAwait(false);
+            }
+
             device.CurrentUser = string.Empty;
             device.Remarks = string.Empty;
             await unitOfWork.DeviceRepository.UpdateAsync(device.Id, device).ConfigureAwait(false);
 
-            var log = new Log
-            {
-                LogTime = DateTime.Now,
-                LogType = (int)LogType.CheckOut,
-                UserName = device.CurrentUser,
-                DeviceId = device.Id
-            };
 
-            await unitOfWork.LogRepository.AddAsync(log).ConfigureAwait(false);
             await unitOfWork.CompleteAsync().ConfigureAwait(false);
 
             return true;
